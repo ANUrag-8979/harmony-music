@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { ProductCard } from "./ProductCard";
+import { ProductCard } from "./productCard";
 import { TextGenerateEffect } from "./ui/text-generate-effect";
 
 export function ProductList() {

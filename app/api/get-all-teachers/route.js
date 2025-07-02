@@ -8,18 +8,22 @@ export async function GET() {
   try {
     await connectDB();
     console.log("from get api")
-    const teachers = await Teacher.find()
+    const teachers = await Teacher.find( {roles: { $ne: 'principle' }})
       .populate({
         path: "teacherId",
         select: "userPhoto firstName lastName email",     // pick whatever User fields you need
       })
-      .lean();                         // optional: returns plain JS objects
-
+      .lean();         
+                      // optional: returns plain JS objects
+       const teachersWithId = teachers.map((t) => ({
+      teacher_id: t._id,   // <-- your Teacher doc's _id
+      ...t,                // <-- everything else: teacherId, specialty, etc.
+    }));
     // 3. return with status 200 and success flag
     console.log(teachers);
     return NextResponse.json(
       {
-        data: { teachers },
+        data: { teachers: teachersWithId },
         message: "Teachers fetched successfully",
         success: true,
       },

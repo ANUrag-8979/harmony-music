@@ -17,21 +17,15 @@ import { useEffect,useState } from "react";
 import Cookies from "js-cookie"; 
 
 export function FloatingDockDemo() {
-    const router = useRouter();
+  const router = useRouter();
   const pathname = usePathname();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Always check on mount *and* on route-change
   useEffect(() => {
-    const token = Cookies.get("token");
-    console.log("FloatingDock: read token →", token);
-    if (token === undefined) {
-      console.warn(
-        "No 'token' cookie visible to js-cookie. " +
-        "If you’re using HttpOnly cookies, the client can’t read them."
-      );
-    }
-    setIsLoggedIn(Boolean(token));
+      const token = Cookies.get("token");
+      // console.log("FloatingDock: read token →", token);
+      setIsLoggedIn(Boolean(token));
   }, [pathname]);
 
   // Example login handler that also flips the flag immediately:

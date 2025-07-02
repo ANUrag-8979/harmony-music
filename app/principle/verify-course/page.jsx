@@ -3,6 +3,8 @@
 import Image from "next/image"
 import { useState, useMemo, useEffect } from "react"
 import { ColourfulText } from "@/components/ui/colourful-text"
+import { BackgroundLines } from "@/components/ui/background-lines";
+import Link from "next/link";
 import {
   Clock,
   User,
@@ -108,19 +110,17 @@ export default function CoursesPage() {
 
   // Verify course function
   const verifyCourse = async (courseId) => {
+    console.log("from verify course",courseId);
+    // console.log()
     try {
       setVerifyingCourses((prev) => new Set(prev).add(courseId))
 
-      const response = await fetch("/api/principle/verify-course", {
+      const response = await axios.post("/api/principle/verify-course", {
         // Replace with your actual API endpoint
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ courseId }),
+       courseId : courseId
       })
 
-      if (!response.ok) {
+      if (response.status != 200) {
         throw new Error("Failed to verify course")
       }
 
@@ -140,6 +140,25 @@ export default function CoursesPage() {
     }
   }
 
+  //
+
+  const removeCourse = async (courseId) => {
+  try {
+    const res = await axios.post('/api/courses/remove', {
+      courseId: courseId
+    });
+
+    if (res.status === 200 && res.data.success) {
+      setCourses(res.data.courses);
+      alert("Course deleted successfully! refrese page");
+    } else {
+      alert("Failed to delete course.");
+    }
+  } catch (error) {
+    console.error("Error deleting course:", error);
+    alert("An error occurred while deleting the course.");
+  }
+};
   const filteredAndSortedCourses = useMemo(() => {
     // Safety check: ensure courses is an array
     if (!Array.isArray(courses)) {
@@ -202,18 +221,18 @@ export default function CoursesPage() {
   return (
     <div className="min-h-screen bg-black text-zinc-100">
       {/* Header */}
-      <div className="border-b border-zinc-800 bg-zinc-900/30 mt-40 mb-8">
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-400 via-zinc-100 to-teal-400 bg-clip-text text-transparent">
-             <ColourfulText text="Sikarwar Music " />
-            </h1>
-            <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
-              Discover our comprehensive collection of music courses designed to help you master your craft, whether
+      <div className="border-b border-zinc-800 bg-zinc-900/30 mb-8">
+        {/* <div className="container mx-auto px-4 py-8"> */}
+          <BackgroundLines className="flex items-center justify-center w-full flex-col px-4">
+            <h2 className="bg-clip-text text-transparent text-center bg-gradient-to-b from-neutral-900 to-neutral-700 dark:from-neutral-600 dark:to-white text-2xl md:text-4xl lg:text-7xl font-sans py-2 md:py-10 relative z-20 font-bold tracking-tight">
+              Course Managment <br /> Page
+            </h2>
+            <p className="max-w-xl mx-auto text-sm md:text-lg text-neutral-700 dark:text-neutral-400 text-center">
+             Discover our comprehensive collection of music courses designed to help you master your craft, whether
               you're just starting out or looking to advance your skills.
             </p>
-          </div>
-        </div>
+          </BackgroundLines>
+        {/* </div> */}
       </div>
 
       {/* Filters Section */}
@@ -346,7 +365,7 @@ export default function CoursesPage() {
                 <div className="p-0">
                   <div className="relative overflow-hidden">
                     <img
-                      src={course.directorUrl || "/placeholder.svg?height=200&width=300"}
+                      src={course.image || "/placeholder.svg?height=200&width=300"}
                       alt={course.title}
                       width={300}
                       height={200}
@@ -413,12 +432,16 @@ export default function CoursesPage() {
                     </div>
 
                     <div className="grid grid-cols-2 gap-2 mb-3">
-                      <button className="rounded-md bg-sky-600 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-sky-700 focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-black focus:outline-none">
-                        Enroll Now
+                      <button
+                        onClick={() => removeCourse(course._id)}
+                       className="rounded-md bg-red-600 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-black focus:outline-none">
+                        Remove Now
                       </button>
+                      <Link href={`/courses/${course.category}/${course.title}`}>
                       <button className="rounded-md border border-white/20 bg-white/10 px-6 py-2.5 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20 focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-black focus:outline-none">
                         Explore More
                       </button>
+                      </Link>
                     </div>
 
                     {/* Verification Section */}
@@ -463,7 +486,7 @@ export default function CoursesPage() {
       </div>
 
       {/* Footer CTA */}
-      <div className="border-t border-zinc-800 bg-zinc-900/20">
+      {/* <div className="border-t border-zinc-800 bg-zinc-900/20">
         <div className="container mx-auto px-4 py-12 text-center">
           <h2 className="text-2xl font-bold mb-4 text-zinc-100">Ready to Start Your Musical Journey?</h2>
           <p className="text-zinc-400 mb-6 max-w-md mx-auto">
@@ -473,7 +496,7 @@ export default function CoursesPage() {
             Browse All Courses
           </button>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

@@ -50,10 +50,10 @@ export async function middleware(request) {
       return NextResponse.redirect(new URL('/login', request.url))
     }
     try {
-      console.log(payload);
       const { payload } = await jwtVerify(token, SECRET)
+      console.log(payload);
       const roles = (payload).roles || []
-      if (roles.includes('principal')) {
+      if (roles.includes('principle')) {
         return NextResponse.next()
       }
     } catch (err) {

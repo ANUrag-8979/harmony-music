@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HoveredLink, Menu, MenuItem, ProductItem } from "./ui/navbar-menu";
 import { cn } from "@/lib/utils";
 import {
@@ -8,7 +8,10 @@ import {
     IconSettings,
     IconUserBolt,
 } from "@tabler/icons-react";
-
+import axios from "axios";
+import Link from "next/link";
+import Cookies from "js-cookie";
+import { usePathname, useRouter } from "next/navigation";
 // export function NavbarDemo() {
 //     return (
 //         <div className="relative w-full flex items-center justify-center ">
@@ -20,9 +23,44 @@ import {
 //     );
 // }
 
-export function NavbarDemo({
-    className
-}) {
+
+
+export function NavbarDemo() {
+    //
+    const router = useRouter();
+    const pathname = usePathname();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    // Always check on mount *and* on route-change
+    useEffect(() => {
+        const token = Cookies.get("token");
+        // console.log("FloatingDock: read token →", token);
+        setIsLoggedIn(Boolean(token));
+    }, [pathname]);
+
+    const handleLogout = () => {
+        Cookies.remove("token");
+        setIsLoggedIn(false);
+        router.push("/login");
+    };
+
+
+    //
+    const [roles, setRoles] = useState([]);
+    useEffect(() => {
+        if(!isLoggedIn) return;
+        async function getRoles() {
+            try {
+                const res = await axios.post("/api/get-roll");
+                // console.log(res.data);
+                setRoles(res.data.roles); // corrected from res.roles to res.data.roles
+            } catch (error) {
+                console.error("Error fetching roles:", error);
+            }
+        }
+
+        getRoles();
+    }, []);
     const [active, setActive] = useState(null);
     return (
         <div
@@ -32,7 +70,11 @@ export function NavbarDemo({
                     <MenuItem setActive={setActive} active={active} item="Explore">
                         <div className="flex flex-col space-y-4 text-sm">
                             <HoveredLink href="/courses">All Courses</HoveredLink>
-                            <HoveredLink href="/user/become-a-teacher">Become a teacher</HoveredLink>
+                            {!roles?.includes("teacher") && (<HoveredLink href="/user/become-a-teacher">Become a teacher</HoveredLink>)}
+
+                            {roles?.includes("teacher") && (<HoveredLink href="/principle/verify-course">Verify Courses</HoveredLink>)}
+                            {roles?.includes("teacher") && (<HoveredLink href="/principle/verify-teacher">Check Job Applications</HoveredLink>)}
+                            {roles?.includes("teacher") && (<HoveredLink href="/teacher/add-course">Add New Course</HoveredLink>)}
                         </div>
                     </MenuItem>
                     <MenuItem setActive={setActive} active={active} item="Products">
@@ -69,9 +111,18 @@ export function NavbarDemo({
                     </MenuItem>
                     <MenuItem setActive={setActive} active={active} item="Accounts">
                         <div className="flex flex-col space-y-4 text-sm">
-                            <HoveredLink href="/login">Login</HoveredLink>
-                            <HoveredLink href="/signup">SignUp </HoveredLink>
+                            {!isLoggedIn && (<HoveredLink href="/login">Login</HoveredLink>)}
+                            
+                            {!isLoggedIn && (<HoveredLink href="/signup">SignUp </HoveredLink>)}
+                            {isLoggedIn && (<HoveredLink href="/user/edit-profile">Profile</HoveredLink>)}
                             <HoveredLink href="/about-us">About Us </HoveredLink>
+                            {isLoggedIn && (
+                                <div className="flex justify-start">
+                                <button onClick={handleLogout} className="hover:text-red-600 cursor-pointer underline">
+                                    Logout
+                                </button>
+                                </div>
+                            )}
                             {/* <HoveredLink href="/seo">Search Engine Optimization</HoveredLink> */}
                             {/* <HoveredLink href="/branding">Branding</HoveredLink> */}
                         </div>

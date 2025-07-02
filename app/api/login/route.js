@@ -38,7 +38,7 @@ export async function POST(request){
         },{status:200})
         //cookies
         responce.cookies.set("token",token,{
-            httpOnly:true,
+            // httpOnly:true,
         })
         return responce;
         // return NextResponse.json({message:"ram ram"});

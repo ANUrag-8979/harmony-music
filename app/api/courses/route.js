@@ -8,7 +8,7 @@ export async function POST(request) {
   try {
     // 1. Connect to your database
     await connectDB();
-
+    
     // 2. Parse incoming body
     // const { tag, courseType } = await request.json();
 
@@ -23,8 +23,21 @@ export async function POST(request) {
     // }
 
     // 4. Query with your filter
-    const courses = await Course.find().lean();
-
+    const rawCourses = await Course.find().lean();
+    const courses = rawCourses.map((c) => ({             // rename _id → id
+      image:         c.directorUrl,      // rename courseName → title
+      category:   c.courseCatigory, // e.g. whatever your DB field is
+      duration:      c.classes,             // rename tag → category
+      instructor:     c.courseDirector, 
+      _id : c._id,
+      title : c.courseName,
+      description : c.description,
+      level  : c.level,
+      price : c.price,
+      status : c.status,
+            // keep any you want
+      // …and so on
+    }));
     // 5. Return the results
     return NextResponse.json(
       { success: true, courses },

@@ -55,7 +55,8 @@ export default function AddCourse() {
     // Basic validation
     const isEmpty = (val) => !val || val.trim() === ""
     const isAnyEmptyInArray = (arr) => arr.some((item) => isEmpty(item))
-
+    const course_categoriy = ['vocals','instruments']
+    const course_Badge = ['beginner','intermediate','advanced']
     if (
       isAnyEmptyInArray(form.myImages) ||
       isEmpty(form.description) ||
@@ -73,6 +74,14 @@ export default function AddCourse() {
       isEmpty(form.courseImage)
     ) {
       alert("Please fill out all fields before submitting.")
+      return
+    }
+    if(!course_categoriy.includes(form.courseCatigory)){
+      alert("Please fill out all fields out of {vocals} or {instruments}")
+      return
+    }
+    if(!course_Badge.includes(form.level)){
+      alert("Please fill out all fields out of {beginner} or {intermediate} or {advanced}")
       return
     }
 
@@ -121,7 +130,7 @@ export default function AddCourse() {
                   value={form.courseName}
                   onChange={(e) => handleChange(e)}
                   className="w-full bg-gray-900 border border-green-500/50 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                  placeholder="Enter course name"
+                  placeholder="hindi-film-music-classes"
                 />
               </div>
 
@@ -164,7 +173,7 @@ export default function AddCourse() {
                     value={form.level}
                     onChange={(e) => handleChange(e)}
                     className="w-full bg-gray-900 border border-green-500/50 rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                    placeholder="e.g., Beginner, Intermediate, Advanced"
+                    placeholder="e.g., beginner, intermediate, advanced"
                   />
                 </div>
               </div>
@@ -178,7 +187,7 @@ export default function AddCourse() {
                 onChange={(e) => handleChange(e)}
                 rows={4}
                 className="w-full bg-gray-900 border border-green-500/50 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all resize-none"
-                placeholder="Describe your course..."
+                placeholder="The preparatory level of our Popular & film music course is ideal for …"
               />
             </div>
 
@@ -203,7 +212,7 @@ export default function AddCourse() {
                   onChange={(e) => handleChange(e)}
                   rows={3}
                   className="w-full bg-gray-900 border border-green-500/50 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all resize-none"
-                  placeholder="First paragraph content..."
+                  placeholder="This contain description of Director..."
                 />
               </div>
 
@@ -215,7 +224,7 @@ export default function AddCourse() {
                   onChange={(e) => handleChange(e)}
                   rows={3}
                   className="w-full bg-gray-900 border border-green-500/50 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all resize-none"
-                  placeholder="Second paragraph content..."
+                  placeholder="This also contain anotehr paragraph of description.."
                 />
               </div>
             </div>
@@ -239,7 +248,7 @@ export default function AddCourse() {
                     value={form.price}
                     onChange={(e) => handleChange(e)}
                     className="w-full bg-gray-900 border border-green-500/50 rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                    placeholder="0"
+                    placeholder="9600"
                   />
                 </div>
               </div>
@@ -254,7 +263,7 @@ export default function AddCourse() {
                     value={form.classes}
                     onChange={(e) => handleChange(e)}
                     className="w-full bg-gray-900 border border-green-500/50 rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                    placeholder="0"
+                    placeholder="12"
                   />
                 </div>
               </div>
@@ -277,7 +286,7 @@ export default function AddCourse() {
                 value={form.courseImage}
                 onChange={(e) => handleChange(e)}
                 className="w-full bg-gray-900 border border-green-500/50 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                placeholder="Enter main course image URL"
+                placeholder="Enter main course image URL showen at top"
               />
             </div>
 
@@ -329,7 +338,7 @@ export default function AddCourse() {
                 <div key={i} className="flex gap-3">
                   <input
                     type="text"
-                    placeholder="Enter learning outcome"
+                    placeholder="Enter learning outcome all those small points eg. {Learn the basics of musical notes and sound.}"
                     value={item}
                     onChange={(e) => handleChange(e, i, "learn")}
                     className="flex-1 bg-gray-900 border border-green-500/50 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"

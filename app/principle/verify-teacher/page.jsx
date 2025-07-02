@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import axios from "axios"
-
+import { BackgroundLines } from "@/components/ui/background-lines";
 export default function TeachersPage() {
   const [teachers, setTeachers] = useState([])
   const [filteredTeachers, setFilteredTeachers] = useState([])
@@ -14,8 +14,10 @@ export default function TeachersPage() {
     const fetchTeachers = async () => {
       setLoading(true)
       try {
-        const res = await axios.get("/api/get-all-teachers")
+        const res = await axios.get("/api/get-all-teachers");
+        console.log("i am not variable",res.data.data.teachers);
         setTeachers(res.data.data.teachers)
+        // console.log("teachers variable:",teachers.roles);
         console.log(res)
         setLoading(false)
       } catch (error) {
@@ -38,10 +40,24 @@ export default function TeachersPage() {
     setFilteredTeachers(filtered)
   }, [teachers, filter])
 
-  const toggleEmployment = async (teacherId) => {
+  const toggleEmployment = async (teacher_id) => {
     setTeachers((prev) =>
-      prev.map((teacher) => (teacher._id === teacherId ? { ...teacher, employed: !teacher.employed } : teacher)),
+      prev.map((teacher) => (teacher._id === teacher_id ? { ...teacher, employed: !teacher.employed } : teacher)),
     )
+
+async function verifyTeacher() {
+  console.log("teacher id is :",teacher_id)
+  // here teacher.teacherId gives whole user object becuse it is polulated bu /api/get-all-teacher so we directly send teacher
+  try {
+    const res = await axios.post('/api/principle/verify-teacher', {
+      teacher_id: teacher_id,
+    });
+    console.log(res.data);
+  } catch (error) {
+    console.error('Error verifying teacher:', error);
+  }
+}
+verifyTeacher();
   }
 
   if (loading) {
@@ -60,16 +76,14 @@ export default function TeachersPage() {
       {/* Header */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-gray-900/30 to-gray-800/30"></div>
-        <div className=" mt-33 relative px-6 py-16">
-          <div className="max-w-7xl mx-auto text-center">
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-4 bg-gradient-to-r from-gray-200 to-red-400 bg-clip-text text-transparent">
-              Teacher Management
-            </h1>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          <BackgroundLines className="flex items-center justify-center w-full flex-col px-4">
+            <h2 className="bg-clip-text text-transparent text-center bg-gradient-to-b from-neutral-900 to-neutral-700 dark:from-neutral-600 dark:to-white text-2xl md:text-4xl lg:text-7xl font-sans py-2 md:py-10 relative z-20 font-bold tracking-tight">
+              Teacher Managment <br /> Page.
+            </h2>
+            <p className="max-w-xl mx-auto text-sm md:text-lg text-neutral-700 dark:text-neutral-400 text-center">
               Manage and discover talented educators in our learning community
             </p>
-          </div>
-        </div>
+          </BackgroundLines>
       </div>
 
       {/* Filters */}
@@ -115,18 +129,20 @@ export default function TeachersPage() {
               className="group relative bg-gray-900 rounded-2xl p-6 border border-gray-700 hover:border-red-500/50 transition-all duration-300 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-red-500/10 hover:bg-gray-800"
             >
               {/* Employment Badge */}
-              {teacher.employed && (
-                <div className="absolute -top-2 -right-2 bg-gradient-to-r from-green-500 to-green-400 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1 shadow-lg">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Verified
-                </div>
-              )}
+             {teacher.employed ? (
+  <div className="absolute -top-2 -right-2 bg-gradient-to-r from-green-500 to-green-400 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1 shadow-lg">
+    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+      <path
+        fillRule="evenodd"
+        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 
+           01-1.414 0l-4-4a1 1 0 011.414-1.414L8 
+           12.586l7.293-7.293a1 1 0 011.414 0z"
+        clipRule="evenodd"
+      />
+    </svg>
+    Verified
+  </div>
+) : null}
 
               {/* Avatar */}
               <div className="flex items-center mb-4">
@@ -176,7 +192,7 @@ export default function TeachersPage() {
 
               {/* Employment Toggle Button */}
               <button
-                onClick={() => toggleEmployment(teacher._id)}
+                onClick={() => toggleEmployment(teacher.teacher_id)}
                 className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 ${
                   teacher.employed
                     ? "bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white shadow-lg shadow-red-500/25 hover:shadow-red-500/40"

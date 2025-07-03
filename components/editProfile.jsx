@@ -12,7 +12,7 @@ export default function EditProfilePage() {
     lastName: "",
     city: "",
     state: "",
-    dateOfBirth: "",
+    // dateOfBirth: "",
   })
   const [profileImage, setProfileImage] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -85,8 +85,9 @@ export default function EditProfilePage() {
 
     try {
       // Replace this with your actual API call
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-
+      const res = await axios.post('/api/users/edit-profile',{
+        formData:formData
+      });
       console.log("Updated profile:", formData)
       alert("Profile updated successfully!")
     } catch (error) {
@@ -271,7 +272,7 @@ export default function EditProfilePage() {
           </div>
 
           {/* Date of Birth */}
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/20">
+          {/* <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/20">
             <div className="flex items-center mb-6">
               <Calendar className="text-purple-400 mr-3" size={24} />
               <h3 className="text-xl font-semibold text-white">Date of Birth</h3>
@@ -287,7 +288,7 @@ export default function EditProfilePage() {
                 className="w-full bg-gray-700/50 border border-gray-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
               />
             </div>
-          </div>
+          </div> */}
 
           {/* Account Settings */}
           <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/20">
@@ -312,7 +313,7 @@ export default function EditProfilePage() {
               </Link>
 
               <Link
-                href="/profile/change-email"
+                href="/user/change-email"
                 className="flex items-center justify-between p-4 bg-gray-700/30 hover:bg-gray-700/50 rounded-xl transition-all duration-200 group"
               >
                 <div className="flex items-center">
@@ -375,6 +376,7 @@ export default function EditProfilePage() {
           {/* Save Button */}
           <div className="flex justify-center pt-4">
             <button
+              onClick={handleSubmit}
               type="submit"
               disabled={isLoading}
               className="flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-purple-500/25 disabled:opacity-50 disabled:cursor-not-allowed"

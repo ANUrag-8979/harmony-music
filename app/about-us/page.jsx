@@ -21,7 +21,7 @@ export default function AboutUs() {
               </div>
             </div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
-              Artium Academy
+              Harmony School
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-gray-300 max-w-3xl mx-auto leading-relaxed">
               Elevating Melodies, Inspiring Souls
@@ -50,7 +50,7 @@ export default function AboutUs() {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-6 text-white">Our Musical Vision</h2>
             <p className="text-lg text-gray-300 max-w-4xl mx-auto leading-relaxed">
-              Artium Academy envisions a world where the joy of music is accessible to everyone, transcending age and
+              Harmony School envisions a world where the joy of music is accessible to everyone, transcending age and
               boundaries. We strive to cultivate a love for melody, nurture artistic expression, and empower individuals
               to find their unique voice in the vast symphony of life.
             </p>
@@ -90,15 +90,15 @@ export default function AboutUs() {
         </div>
       </section>
 
-      {/* The Artium Advantage */}
+      {/* The Harmony Advantage */}
       <section className="py-20 bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              The Artium Advantage
+              The Harmony Advantage
             </h2>
             <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-              Discover what makes Artium Academy the premier choice for online music education
+              Discover what makes Harmony Academy the premier choice for online music education
             </p>
           </div>
 
@@ -267,7 +267,7 @@ export default function AboutUs() {
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold mb-6 text-white">Ready to Begin Your Musical Journey?</h2>
           <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-            Join thousands of students who have discovered their musical potential with Artium Academy. Start your
+            Join thousands of students who have discovered their musical potential with Harmony Academy. Start your
             transformation today!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -276,7 +276,7 @@ export default function AboutUs() {
                 Start Learning Today
               </button>
             </Link>
-            <Link href={"#"}>
+            <Link href={"/courses"}>
             <button className="px-8 py-4 border-2 border-white text-white font-semibold rounded-xl hover:bg-white hover:text-gray-900 transition-all duration-300">
               Book a Free Trial
             </button>

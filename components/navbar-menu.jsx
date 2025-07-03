@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { HoveredLink, Menu, MenuItem, ProductItem } from "./ui/navbar-menu";
 import { cn } from "@/lib/utils";
+import { ColourfulText } from "./ui/colourful-text";
 import {
     IconArrowLeft,
     IconBrandTabler,
@@ -30,12 +31,14 @@ export function NavbarDemo() {
     const router = useRouter();
     const pathname = usePathname();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [roles, setRoles] = useState([]);
 
     // Always check on mount *and* on route-change
-    useEffect(() => {
+   useEffect(() => {
         const token = Cookies.get("token");
-        // console.log("FloatingDock: read token →", token);
+        console.log("token in navbar:", token);
         setIsLoggedIn(Boolean(token));
+        console.log(isLoggedIn);
     }, [pathname]);
 
     const handleLogout = () => {
@@ -46,13 +49,13 @@ export function NavbarDemo() {
 
 
     //
-    const [roles, setRoles] = useState([]);
     useEffect(() => {
+        console.log("form navbar isLoggedIn's value",isLoggedIn)
         if(!isLoggedIn) return;
         async function getRoles() {
             try {
                 const res = await axios.post("/api/get-roll");
-                // console.log(res.data);
+                console.log(res.data);
                 setRoles(res.data.roles); // corrected from res.roles to res.data.roles
             } catch (error) {
                 console.error("Error fetching roles:", error);
@@ -60,24 +63,29 @@ export function NavbarDemo() {
         }
 
         getRoles();
-    }, []);
+    }, [isLoggedIn]);
     const [active, setActive] = useState(null);
     return (
         <div
             className={cn(" fixed top-10 inset-x-0 max-w-2xl mx-auto z-50")}>
+                
             <Menu setActive={setActive}>
-                <div className="flex justify-between gap-4">
+                <div className="flex justify-between gap-4 items-center">
+                    <Link href={'/'}>
+                   <h1 className="text-l md:text-xl lg:text-2xl font-bold text-center text-white relative z-2 font-sans">
+                    <ColourfulText text="Sikarwar" /> <br /> 
+                    </h1>
+                    </Link>
                     <MenuItem setActive={setActive} active={active} item="Explore">
-                        <div className="flex flex-col space-y-4 text-sm">
+                        <div className="flex flex-col space-y-4 text-sm items-start">
                             <HoveredLink href="/courses">All Courses</HoveredLink>
                             {!roles?.includes("teacher") && (<HoveredLink href="/user/become-a-teacher">Become a teacher</HoveredLink>)}
-
                             {roles?.includes("teacher") && (<HoveredLink href="/principle/verify-course">Verify Courses</HoveredLink>)}
                             {roles?.includes("teacher") && (<HoveredLink href="/principle/verify-teacher">Check Job Applications</HoveredLink>)}
                             {roles?.includes("teacher") && (<HoveredLink href="/teacher/add-course">Add New Course</HoveredLink>)}
                         </div>
                     </MenuItem>
-                    <MenuItem setActive={setActive} active={active} item="Products">
+                    {/* <MenuItem setActive={setActive} active={active} item="Products">
                         <div className="  text-sm grid grid-cols-2 gap-10 p-4">
                             <ProductItem
                                 title="Algochurn"
@@ -100,15 +108,15 @@ export function NavbarDemo() {
                                 src="https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.47.07%E2%80%AFPM.png"
                                 description="Respond to government RFPs, RFIs and RFQs 10x faster using AI" />
                         </div>
-                    </MenuItem>
-                    <MenuItem setActive={setActive} active={active} item="Pricing">
+                    </MenuItem> */}
+                    {/* <MenuItem setActive={setActive} active={active} item="Pricing">
                         <div className="flex flex-col space-y-4 text-sm">
                             <HoveredLink href="/hobby">Hobby</HoveredLink>
                             <HoveredLink href="/individual">Individual</HoveredLink>
                             <HoveredLink href="/team">Team</HoveredLink>
                             <HoveredLink href="/enterprise">Enterprise</HoveredLink>
                         </div>
-                    </MenuItem>
+                    </MenuItem> */}
                     <MenuItem setActive={setActive} active={active} item="Accounts">
                         <div className="flex flex-col space-y-4 text-sm">
                             {!isLoggedIn && (<HoveredLink href="/login">Login</HoveredLink>)}

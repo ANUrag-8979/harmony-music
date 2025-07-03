@@ -362,7 +362,7 @@ export default function CoursesPage() {
                       >
                         Enroll know
                       </button>
-                      <Link href={`/courses/${course.category}/${course.title}`}>
+                      <Link href={`/courses/${course.category}/${course.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}`}>
                       <button className="rounded-md border border-white/20 bg-white/10 px-6 py-2.5 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20 focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-black focus:outline-none">
                         Explore more
                       </button>

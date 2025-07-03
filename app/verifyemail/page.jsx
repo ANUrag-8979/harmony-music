@@ -16,7 +16,7 @@ export default function VerifyEmailPage() {
 function VerifyEmail() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [token, setToken] = useState<string | null>(null)
+  const [token, setToken] = useState(null)
   const [message, setMessage] = useState('')
   const [disableButton, setDisableButton] = useState(false)
   const [isLoading, setIsLoading] = useState(false)

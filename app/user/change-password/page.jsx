@@ -5,9 +5,9 @@ import React from "react"
 import { useState } from "react"
 import axios from "axios"
 
-export default function EmailChangePage() {
+export default function PasswordChangePage() {
   const [password, setPassword] = useState("")
-  const [newEmail, setNewEmail] = useState("")
+  const [newPassword, setNewPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState("")
   const [messageType, setMessageType] = useState("")
@@ -19,22 +19,17 @@ export default function EmailChangePage() {
     setMessageType("")
 
     try {
-      const response = await axios.post("/api/users/change-email", {
+      const response = await axios.post("/api/users/change-password", {
         password,
-        new_email: newEmail,
+        new_password: newPassword,
       })
       console.log(response);
-    //   if(response.status != 200){
-    //     setMessage(response.data.message)
-    //     setMessageType("error")
-    //   }
-      setMessage("Email changed successfully!")
+      setMessage("Password changed successfully!")
       setMessageType("success")
       setPassword("")
-      setNewEmail("")
     } catch (error) {
-    //   setMessage(error.message)
-    setMessage("wrong password")
+        console.log(error);
+    setMessage(error.response?.data?.message)
     setMessageType("error")
     } finally {
       setIsLoading(false)
@@ -46,8 +41,8 @@ export default function EmailChangePage() {
       <div className="w-full max-w-md">
         <div className="mt-40 bg-gray-800/50 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-8 shadow-2xl">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">Change Email</h1>
-            <p className="text-gray-400">Update your email address securely</p>
+            <h1 className="text-3xl font-bold text-white mb-2">Change Password</h1>
+            <p className="text-gray-400">Update your Password securely</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -68,13 +63,13 @@ export default function EmailChangePage() {
 
             <div>
               <label htmlFor="newEmail" className="block text-sm font-medium text-gray-300 mb-2">
-                New Email Address
+                New Password
               </label>
               <input
-                type="email"
-                id="newEmail"
-                value={newEmail}
-                onChange={(e) => setNewEmail(e.target.value)}
+                type="password"
+                id="newPassword"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
                 required
                 className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 placeholder="Enter your new email address"
@@ -95,7 +90,7 @@ export default function EmailChangePage() {
 
             <button
               type="submit"
-              disabled={isLoading || !password || !newEmail}
+              disabled={isLoading || !password || !newPassword}
               className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg"
             >
               {isLoading ? (
@@ -104,13 +99,13 @@ export default function EmailChangePage() {
                   Changing...
                 </div>
               ) : (
-                "Change Email"
+                "Change Passowrd"
               )}
             </button>
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-gray-400 text-sm">Make sure you have access to your new email address</p>
+            <p className="text-gray-400 text-sm">Make sure you have access to your new Password</p>
           </div>
         </div>
 

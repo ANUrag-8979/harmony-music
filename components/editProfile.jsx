@@ -299,7 +299,7 @@ export default function EditProfilePage() {
 
             <div className="space-y-4">
               <Link
-                href="/profile/change-password"
+                href="/user/change-password"
                 className="flex items-center justify-between p-4 bg-gray-700/30 hover:bg-gray-700/50 rounded-xl transition-all duration-200 group"
               >
                 <div className="flex items-center">

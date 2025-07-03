@@ -5,6 +5,7 @@ import { Input } from "../../components/ui/input"
 import { cn } from "@/lib/utils"
 import { IconBrandGithub, IconBrandGoogle, IconBrandOnlyfans } from "@tabler/icons-react"
 import Link from "next/link"
+import axios from "axios"; 
 
 // Simple Toast Component
 const Toast = ({ message, type, onClose }) => {
@@ -57,43 +58,51 @@ export default function SignupFormDemo() {
 
   // Fixed: Added 'e' parameter and proper error handling
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    console.log(firstName)
-    
-    try {
-      setLoading(true);
-      // Fixed: Using fetch instead of axios
-      const response = await fetch("/api/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          password: password,
-          username: username,
-        }),
-      })
+  e.preventDefault();
 
-      const data = await response.json()
-      console.log(data);
-      if (response.ok) {
-        showToast("Signup successful!", "success")
-      } else {
-        showToast(data.message || "Signup failed", "error")
-      }
-      setLoading(false);
-    } catch (error) {
-      showToast("Network error. Please try again.", "error")
-      console.error("Signup error:", error)
-    }finally {
-      // Always reset loading state
-      setLoading(false);
-    }
-    console.log("Form submitted")
+  // Basic form validation
+  if (!firstName) {
+    showToast("First name is required.", "error");
+    return;
   }
+  if (!email) {
+    showToast("Email is required.", "error");
+    return;
+  }
+  if (!password) {
+    showToast("Password is required.", "error");
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    const response = await axios.post("/api/signup", {
+      firstName,
+      lastName,
+      email,
+      password,
+      username,
+    });
+
+    const data = response.data;
+    console.log(data);
+
+    if (response.status === 200) {
+      showToast("Signup successful! Verification email has been sent", "success");
+    } else {
+      showToast(data.message || "Signup failed", "error");
+    }
+  } catch (error) {
+    const errorMessage = error.response?.data?.message || "Network error. Please try again.";
+    showToast(errorMessage, "error");
+    console.error("Signup error:", error);
+  } finally {
+    setLoading(false);
+  }
+
+  console.log("Form submitted");
+}
 
   return (
     <>
@@ -172,7 +181,10 @@ export default function SignupFormDemo() {
           <Link href={'/login'} className="flex justify-center my-4 text-green-500"> Login </Link>
           
           <button
-            className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset]"
+            // disabled={loading}
+            className="disabled:cursor-not-allowed
+            disabled:opacity-50 
+            group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset]"
             type="submit"
           >
             {loading ? "loading.." : "Sign up"}

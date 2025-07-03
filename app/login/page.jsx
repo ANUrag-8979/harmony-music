@@ -4,6 +4,7 @@ import { Label } from "../../components/ui/label"
 import { Input } from "../../components/ui/input"
 import { cn } from "@/lib/utils"
 import axios from "axios"
+import { useRouter } from "next/navigation";
 import {
   IconBrandGithub,
   IconBrandGoogle,
@@ -15,10 +16,12 @@ import {
 import Link from "next/link"
 
 export default function SignupFormDemo() {
+  // const router = useRouter();
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [toast, setToast] = useState(null)
+  const [loading, setLoading] = useState(false);
 
   const showToast = (message, type = "success") => {
     setToast({ message, type })
@@ -38,30 +41,37 @@ export default function SignupFormDemo() {
   }, [toast])
 
   const handleSubmit = async (e) => {
-    console.log("handleSubmit called")
-    e.preventDefault()
-    setError("")
+  setLoading(true);
+  console.log("handleSubmit called");
+  e.preventDefault();
+  setError("");
 
-    // Validate inputs
-    if (!email.trim() || !password.trim()) {
-      setError("Please fill in both email and password.")
-      showToast("Please fill in both email and password.", "error")
-      return
-    }
-
-    try {
-      // Call Next.js API route at /api/login (app/api/login/route.ts)
-      const res = await axios.post("/api/login", { email, password })
-      console.log(res.data.message)
-      showToast("Login successful! Welcome back.", "success")
-      // handle success (e.g., redirect)
-    } catch (err) {
-      console.error(err)
-      const errorMessage = err.response?.data?.message || "Login failed. Please try again."
-      setError(errorMessage)
-      showToast(errorMessage, "error")
-    }
+  // Validate inputs
+  if (!email.trim() || !password.trim()) {
+    setError("Please fill in both email and password.");
+    showToast("Please fill in both email and password.", "error");
+    setLoading(false); // ✅ Reset loading before exiting
+    return;
   }
+
+  try {
+    const res = await axios.post("/api/login", { email, password });
+    console.log(res.data.message);
+    showToast("Login successful! Welcome back.", "success");
+
+    // ✅ Delay the refresh by 2 seconds
+    setTimeout(() => {
+      window.location.reload(); // 🔁 Full reload — server sees updated cookies
+    }, 2000);
+  } catch (err) {
+    console.error(err);
+    const errorMessage = err.response?.data?.message || "Login failed. Please try again.";
+    setError(errorMessage);
+    showToast(errorMessage, "error");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleSocialLogin = (provider) => {
     console.log(`Social login: ${provider}`)
@@ -127,12 +137,23 @@ export default function SignupFormDemo() {
           </LabelInputContainer>
 
           <button
-            className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset]"
+            className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset] disabled:opacity-60"
             type="submit"
+            disabled={loading} // Disable the button while loading
           >
-            Login &rarr;
-            <BottomGradient />
+            {loading ? (
+              <div className="flex items-center justify-center gap-2">
+                <span className="loader border-white"></span>
+                Logging in...
+              </div>
+            ) : (
+              <>
+                Login &rarr;
+                <BottomGradient />
+              </>
+            )}
           </button>
+
           <Link href={'/signup'} className="flex justify-center mt-4 text-blue-500">create account?</Link>
           <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
 

@@ -80,8 +80,8 @@ export function NavbarDemo() {
                         <div className="flex flex-col space-y-4 text-sm items-start">
                             <HoveredLink href="/courses">All Courses</HoveredLink>
                             {!roles?.includes("teacher") && (<HoveredLink href="/user/become-a-teacher">Become a teacher</HoveredLink>)}
-                            {roles?.includes("teacher") && (<HoveredLink href="/principle/verify-course">Verify Courses</HoveredLink>)}
-                            {roles?.includes("teacher") && (<HoveredLink href="/principle/verify-teacher">Check Job Applications</HoveredLink>)}
+                            {roles?.includes("principle") && (<HoveredLink href="/principle/verify-course">Verify Courses</HoveredLink>)}
+                            {roles?.includes("principle") && (<HoveredLink href="/principle/verify-teacher">Check Job Applications</HoveredLink>)}
                             {roles?.includes("teacher") && (<HoveredLink href="/teacher/add-course">Add New Course</HoveredLink>)}
                         </div>
                     </MenuItem>

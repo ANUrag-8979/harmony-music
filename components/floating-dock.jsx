@@ -53,21 +53,21 @@ export function FloatingDockDemo() {
     },
 
     {
-      title: "Products",
+      title: "All Courses",
       icon: (
         <IconTerminal2 className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
       href: "/courses",
     },
+    // {
+    //   title: "Become Teacher",
+    //   icon: (
+    //     <IconNewSection className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+    //   ),
+    //   href: "/user/become-a-teacher",
+    // },
     {
-      title: "Components",
-      icon: (
-        <IconNewSection className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
-      href: "#",
-    },
-    {
-      title: "Aceternity UI",
+      title: "About Us",
       icon: (
         <img
           src="https://assets.aceternity.com/logo-dark.png"
@@ -75,10 +75,10 @@ export function FloatingDockDemo() {
           height={20}
           alt="Aceternity Logo" />
       ),
-      href: "#",
+      href: "/about-us",
     },
     {
-      title: "Changelog",
+      title: "Music Recomandator",
       icon: (
         <IconExchange className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),

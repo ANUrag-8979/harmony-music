@@ -93,6 +93,9 @@ export default function SignupFormDemo() {
     } else {
       showToast(data.message || "Signup failed", "error");
     }
+    setTimeout(() => {
+      window.location.href = "/login"
+    }, 1000)
   } catch (error) {
     const errorMessage = error.response?.data?.message || "Network error. Please try again.";
     showToast(errorMessage, "error");

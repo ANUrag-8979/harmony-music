@@ -5,6 +5,7 @@ import { Plus, X, ImageIcon, BookOpen, DollarSign, Users, Tag, Award } from "luc
 
 export default function AddCourse() {
   const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
     myImages: [""],
     description: "",
@@ -51,12 +52,12 @@ export default function AddCourse() {
 
   async function handleSubmit(e) {
     e.preventDefault()
-
+    setIsLoading(true);
     // Basic validation
     const isEmpty = (val) => !val || val.trim() === ""
     const isAnyEmptyInArray = (arr) => arr.some((item) => isEmpty(item))
-    const course_categoriy = ['vocals','instruments']
-    const course_Badge = ['beginner','intermediate','advanced']
+    const course_categoriy = ['vocals', 'instruments']
+    const course_Badge = ['beginner', 'intermediate', 'advanced']
     if (
       isAnyEmptyInArray(form.myImages) ||
       isEmpty(form.description) ||
@@ -74,14 +75,17 @@ export default function AddCourse() {
       isEmpty(form.courseImage)
     ) {
       alert("Please fill out all fields before submitting.")
+      setIsLoading(false);
       return
     }
-    if(!course_categoriy.includes(form.courseCatigory)){
+    if (!course_categoriy.includes(form.courseCatigory)) {
       alert("Please fill out all fields out of {vocals} or {instruments}")
+      setIsLoading(false);
       return
     }
-    if(!course_Badge.includes(form.level)){
+    if (!course_Badge.includes(form.level)) {
       alert("Please fill out all fields out of {beginner} or {intermediate} or {advanced}")
+      setIsLoading(false);
       return
     }
 
@@ -91,16 +95,24 @@ export default function AddCourse() {
       classes: Number.parseInt(form.classes),
     }
 
-    const res = await fetch("/api/add-course", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    })
+    try {
+      const res = await fetch("/api/add-course", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
 
-    if (res.ok) {
-      router.push("/")
-    } else {
-      console.error("Failed to save")
+      if (res.ok) {
+        router.push("/");
+      } else {
+        console.error("Failed to save");
+        alert("Something went wrong while saving the course.");
+      }
+    } catch (error) {
+      console.error("Error while submitting:", error);
+      alert("An unexpected error occurred.");
+    } finally {
+      setIsLoading(false); // stop loading no matter what
     }
   }
 
@@ -389,9 +401,11 @@ export default function AddCourse() {
           <div className="flex justify-center pt-6">
             <button
               type="submit"
-              className="px-8 py-4 bg-gradient-to-r from-green-900 to-green-900 hover:from-green-950 hover:to-green-950 text-white font-semibold rounded-xl transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-black"
+              disabled={isLoading}
+              className={`px-8 py-4 bg-gradient-to-r from-green-900 to-green-900 hover:from-green-950 hover:to-green-950 text-white font-semibold rounded-xl transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-black ${isLoading ? "opacity-50 cursor-not-allowed scale-100" : ""
+                }`}
             >
-              Create Course
+              {isLoading ? "Creating..." : "Create Course"}
             </button>
           </div>
         </form>

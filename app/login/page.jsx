@@ -16,7 +16,7 @@ import {
 import Link from "next/link"
 
 export default function SignupFormDemo() {
-  // const router = useRouter();
+  const router = useRouter();
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
@@ -61,8 +61,8 @@ export default function SignupFormDemo() {
 
     // ✅ Delay the refresh by 2 seconds
     setTimeout(() => {
-      window.location.reload(); // 🔁 Full reload — server sees updated cookies
-    }, 2000);
+      window.location.href = "/"
+    }, 1000)
   } catch (err) {
     console.error(err);
     const errorMessage = err.response?.data?.message || "Login failed. Please try again.";

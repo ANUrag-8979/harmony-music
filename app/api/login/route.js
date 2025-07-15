@@ -7,8 +7,8 @@ import { connectDB } from "@/dbConfigure/connectDB";
 import { sendEmail } from "@/helper/mailer";
 import Teacher from "@/models/teacher";
 
-connectDB();
 export async function POST(request){
+    await connectDB();
     try {
         const reqBody = await request.json();
         const {email,password} = reqBody;

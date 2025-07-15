@@ -40,9 +40,9 @@ const userSchema = new mongoose.Schema({
     state:{
         type:String
     },
-    profilePhoto:{
-        type:String
-    },
+    // profileImage:{
+    //     type:String
+    // },
     forgotPasswordToken:String,
     forgotPasswordTokenExpiry:Date,
     verifyToken : String,

@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export async function POST(request){
     await connectDB();
     const res = await request.json();
-    const {formData} = res;
+    const {formData,userPhoto} = res;
     const {firstName,lastName,city,state} = formData;
     const userId = await getUserId(request);
     // console.log("userId",userId)
@@ -17,6 +17,7 @@ export async function POST(request){
     user.lastName = lastName;
     user.city = city;
     user.state = state;
+    user.userPhoto = userPhoto;
     await user.save();
 
     return NextResponse.json({message:"profile updated successfully!",success:true},{status:200});

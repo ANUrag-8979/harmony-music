@@ -16,6 +16,8 @@ import {
 } from "lucide-react"
 import axios from "axios"
 import Link from "next/link"
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation"
 
 const getLevelColor = (level) => {
   switch (level) {
@@ -88,6 +90,8 @@ export default function CoursesPage() {
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(true)
   const [toasts, setToasts] = useState([])
+  const [isLoggedIn,setIsLoggedIn] = useState(false);
+  const router = useRouter();
 
   // Custom toast function
   const showToast = (title, description, variant = "default") => {
@@ -99,7 +103,12 @@ export default function CoursesPage() {
   const removeToast = (id) => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id))
   }
-
+  // useEffect(() => {
+  //     const token = Cookies.get("token");
+  //     console.log("token in allCourses page:", token);
+  //     setIsLoggedIn(Boolean(token));
+  //     console.log(isLoggedIn);
+  //     }, [pathname]);
   useEffect(() => {
     const fetchCourses = async () => {
       try {
@@ -145,6 +154,16 @@ export default function CoursesPage() {
   }, [sortByPrice, selectedLevel, selectedCategory, courses])
 
   async function handleEnroll(id, courseName) {
+    
+    const token = Cookies.get('token') || null;
+
+    // console.log("from enroll butotn",token);
+    if (!token) {
+      // Redirect to login if not authenticated
+      //  showToast("Login to access", "destructive")
+      router.push('/login');
+      return;
+    }
     console.log(id, courseName)
     try {
       // const token = await cookies.get("token");

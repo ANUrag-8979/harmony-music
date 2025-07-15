@@ -11,7 +11,7 @@ export default function Component() {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <Music className="h-8 w-8 text-purple-400" />
-              <span className="text-xl font-bold text-white">MusicLearn</span>
+              <span className="text-xl font-bold text-white">Harmony</span>
             </div>
             <p className="text-sm text-gray-400 leading-relaxed">
               Master your musical journey with expert-led courses, interactive lessons, and a supportive community of
@@ -128,7 +128,7 @@ export default function Component() {
             <h3 className="text-lg font-semibold text-white">Support</h3>
             <nav className="space-y-2">
               <Link
-                href="/about"
+                href="/about-us"
                 className="block text-sm text-gray-400 hover:text-purple-400 transition-colors duration-200"
               >
                 About Us

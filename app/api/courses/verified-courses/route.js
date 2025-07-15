@@ -6,9 +6,9 @@ import Course from "@/models/course";
 
 export async function POST(request) {
     console.log("from verified-courses");
+    await connectDB();
   try {
     // 1. Connect to your database
-    await connectDB();
     const rawCourses = await Course.find({ status: "verified" }).lean();
 
     // now rename whatever fields you like:

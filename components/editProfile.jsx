@@ -34,7 +34,7 @@ export default function EditProfilePage() {
 
           // Check if userDetails exists before destructuring
           if (userDetails) {
-            const { firstName, lastName, city, state, dateOfBirth } = userDetails
+            const { firstName, lastName, city, state, dateOfBirth,userPhoto} = userDetails
 
             setFormData({
               firstName: firstName || "",
@@ -43,6 +43,7 @@ export default function EditProfilePage() {
               state: state || "",
               dateOfBirth: dateOfBirth || "",
             })
+            setProfileImage(userPhoto);
           } else {
             console.warn("userDetails not found in response")
             // Keep form data as empty strings - user can fill manually
@@ -68,27 +69,54 @@ export default function EditProfilePage() {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async(e) => {
     const file = e.target.files?.[0]
     if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setProfileImage(reader.result)
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'nextjs_unsigned'); // Change this to your unsigned preset
+
+      setIsLoading(true);
+
+      try {
+        const res = await axios.post(
+          'https://api.cloudinary.com/v1_1/dfb78qbys/image/upload',
+          formData
+        );
+
+        const imageUrl = res.data.secure_url;
+        console.log("from cloudinary",imageUrl);
+        setProfileImage(imageUrl);
+        // setImageUrl(imageUrl);
+
+        // Optional: save URL to MongoDB
+        // await axios.post('/api/save-image-url', {
+        //   url: imageUrl,
+        // });
+      } catch (err) {
+        console.error('Upload failed:', err);
+        alert('Upload failed');
+      }finally{
+        setIsLoading(false);
       }
-      reader.readAsDataURL(file)
+      // const reader = new FileReader()
+      // reader.onloadend = () => {
+      //   setProfileImage(reader.result)
+      // }
+      // reader.readAsDataURL(file)
     }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsLoading(true)
-
     try {
       // Replace this with your actual API call
-      const res = await axios.post('/api/users/edit-profile',{
-        formData:formData
+      const res = await axios.post('/api/users/edit-profile', {
+        formData: formData,
+        userPhoto :profileImage,
       });
-      console.log("Updated profile:", formData)
+      console.log("Updated profile:", formData,profileImage)
       alert("Profile updated successfully!")
     } catch (error) {
       console.error("Error updating profile:", error)

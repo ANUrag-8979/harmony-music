@@ -31,7 +31,7 @@ export default function Component() {
   return (
     <div className="bg-slate-800 text-white py-16 px-8">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold mb-16 text-left">Artium Advantage</h2>
+        <h2 className="text-4xl md:text-5xl font-bold mb-16 text-left">Harmony Advantage</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
           {features.map((feature, index) => {

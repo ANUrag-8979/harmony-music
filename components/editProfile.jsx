@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { Camera, User, MapPin, Calendar, Settings, Mail, Lock, Save, MessageSquare, Send } from "lucide-react"
+import { Camera, User, MapPin, Calendar, Settings, Mail, Lock, Save, MessageSquare, Send,Loader2 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import axios from "axios"
@@ -16,6 +16,7 @@ export default function EditProfilePage() {
   })
   const [profileImage, setProfileImage] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [isUploadingPhoto,setIsUploadingPhoto] = useState(false);
   const [isLoadingUserData, setIsLoadingUserData] = useState(true)
   const [review, setReview] = useState("")
   const [isSubmittingReview, setIsSubmittingReview] = useState(false)
@@ -75,35 +76,21 @@ export default function EditProfilePage() {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('upload_preset', 'nextjs_unsigned'); // Change this to your unsigned preset
-
-      setIsLoading(true);
-
+      setIsUploadingPhoto(true);
       try {
         const res = await axios.post(
           'https://api.cloudinary.com/v1_1/dfb78qbys/image/upload',
           formData
         );
-
         const imageUrl = res.data.secure_url;
         console.log("from cloudinary",imageUrl);
         setProfileImage(imageUrl);
-        // setImageUrl(imageUrl);
-
-        // Optional: save URL to MongoDB
-        // await axios.post('/api/save-image-url', {
-        //   url: imageUrl,
-        // });
       } catch (err) {
         console.error('Upload failed:', err);
         alert('Upload failed');
       }finally{
-        setIsLoading(false);
+        setIsUploadingPhoto(false);
       }
-      // const reader = new FileReader()
-      // reader.onloadend = () => {
-      //   setProfileImage(reader.result)
-      // }
-      // reader.readAsDataURL(file)
     }
   }
 
@@ -181,8 +168,10 @@ export default function EditProfilePage() {
               <div className="relative group">
                 <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-purple-600 to-pink-600 p-1">
                   <div className="w-full h-full rounded-full overflow-hidden bg-gray-800 flex items-center justify-center">
-                    {profileImage ? (
-                      <Image
+                    {isUploadingPhoto ? (
+    <Loader2 size={48} className="text-purple-400 animate-spin" />
+  ) :profileImage ? (
+                      <img
                         src={profileImage || "/placeholder.svg"}
                         alt="Profile"
                         width={128}

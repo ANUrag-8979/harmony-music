@@ -9,7 +9,6 @@ export default function Home() {
     <div className="bg-black">
        <StickyBanner className="z-100 bg-gradient-to-b from-blue-500 to-blue-600"> the website is under construction</StickyBanner>
       {/* <SidebarDemo></SidebarDemo> */}
-
       <ThreeDMarqueeDemo />
       {/* <AppleCardsCarouselDemo></AppleCardsCarouselDemo> */}
       {/* <ExpandableCardDemo></ExpandableCardDemo> */}

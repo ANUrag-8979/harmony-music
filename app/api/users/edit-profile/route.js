@@ -9,6 +9,7 @@ export async function POST(request){
     const {firstName,lastName,city,state} = formData;
     const userId = await getUserId(request);
     // console.log("userId",userId)
+    console.log(userPhoto);
     if(!userId){
         return NextResponse.json({message:"uer not found",success:false},{status:403});
     }

@@ -8,6 +8,7 @@ export default function AnimatedTestimonialsDemo() {
       name: "Sarah Chen",
       designation: "Product Manager at TechFlow",
       src: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      // src : "https://images.unsplash.com/photo-1682687981922-7b55dbb30892?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8",
     },
     {
       quote:

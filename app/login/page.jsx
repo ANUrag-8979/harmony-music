@@ -59,10 +59,10 @@ export default function SignupFormDemo() {
     console.log(res.data.message);
     showToast("Login successful! Welcome back.", "success");
 
-    // ✅ Delay the refresh by 2 seconds
+    // ✅ Delay the refresh by 1 seconds
     setTimeout(() => {
       window.location.href = "/"
-    }, 1000)
+    }, 500)
   } catch (err) {
     console.error(err);
     const errorMessage = err.response?.data?.message || "Login failed. Please try again.";

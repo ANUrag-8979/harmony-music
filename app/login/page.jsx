@@ -107,9 +107,9 @@ export default function SignupFormDemo() {
       )}
 
       <div className="mt-30 shadow-input mx-auto w-full max-w-md rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black">
-        <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">Welcome to Aceternity</h2>
+        <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">Welcome to Harmony</h2>
         <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
-          Login to Aceternity using your credentials below.
+          Login to Harmony using your credentials below.
         </p>
         <form className="my-8" onSubmit={handleSubmit}>
           {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
@@ -157,11 +157,11 @@ export default function SignupFormDemo() {
           <Link href={'/signup'} className="flex justify-center mt-4 text-blue-500">create account?</Link>
           <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
 
-          <div className="flex flex-col space-y-4">
+          {/* <div className="flex flex-col space-y-4">
             <SocialButton label="GitHub" icon={<IconBrandGithub />} onClick={() => handleSocialLogin("GitHub")} />
             <SocialButton label="Google" icon={<IconBrandGoogle />} onClick={() => handleSocialLogin("Google")} />
             <SocialButton label="OnlyFans" icon={<IconBrandOnlyfans />} onClick={() => handleSocialLogin("OnlyFans")} />
-          </div>
+          </div> */}
         </form>
       </div>
     </>

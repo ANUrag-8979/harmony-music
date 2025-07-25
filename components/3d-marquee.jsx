@@ -48,7 +48,7 @@ return (
       <h2 className="relative z-20 mx-auto max-w-4xl text-center text-2xl font-bold text-balance text-white md:text-4xl lg:text-6xl">
         We Welcomes you{" "}
         <span className="relative z-20 inline-block rounded-xl bg-blue-500/40 px-4 py-1 text-white underline decoration-sky-500 decoration-[6px] underline-offset-[16px] backdrop-blur-sm">
-          Sikarwar
+          Harmony
         </span>{" "}
         Music School.
       </h2>

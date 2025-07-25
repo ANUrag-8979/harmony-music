@@ -16,7 +16,7 @@ export async function POST(request) {
   }
 }
 
-// (optional) you can also add a GET handler:
+// (optional) can also add a GET handler:
 // export async function GET() {
 //   await dbConnect()
 //   const allPages = await Page.find()

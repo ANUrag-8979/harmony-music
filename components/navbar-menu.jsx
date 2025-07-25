@@ -73,7 +73,7 @@ export function NavbarDemo() {
                 <div className="flex justify-between gap-4 items-center">
                     <Link href={'/'}>
                    <h1 className="text-l md:text-xl lg:text-2xl font-bold text-center text-white relative z-2 font-sans">
-                    <ColourfulText text="Sikarwar" /> <br /> 
+                    <ColourfulText text="Harmony" /> <br /> 
                     </h1>
                     </Link>
                     <MenuItem setActive={setActive} active={active} item="Explore">
